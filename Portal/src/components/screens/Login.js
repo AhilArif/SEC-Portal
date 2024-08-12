@@ -1,56 +1,98 @@
 import { useNavigation } from '@react-navigation/native';
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert, Image } from 'react-native';
+import loginbg from '../../../assets/loginbg.png'
 
 const LoginPage = () => {
-  const [name, setName] = useState('');
-  const [password, setPassword] = useState('');
-  const navigation = useNavigation(); // Using useNavigation hook to get the navigation object
+  const navigation = useNavigation();
+  const [fdata, setFdata] = useState({ email: '', password: '' });
+  const [errormsg, setErrormsg] = useState(null);
 
-  const handleLoginPress = () => {
-    if (name === 'Aahil' && password === 'deerani') {
-      console.log('Welcome to main screen');
-      navigation.navigate('MainScreen'); // Navigating to MainScreen if username and password match
-    } 
-    else if (name === 'admin' && password === 'admin123') {
-      console.log('Welcome to Admin Dashboard');
-      navigation.navigate('Dashboard'); // Navigating to MainScreen if username and password match
-    }  
-    else {
-      console.log('Invalid username or password');
-    } 
-    setName('');
-    setPassword('');
+  const Sendtobackend = () => {
+    if (fdata.email === '' || fdata.password === '') {
+      setErrormsg('Please fill all the fields');
+      return;
+    }
+
+    fetch('http://10.0.2.2:3000/signin', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(fdata),
+    })
+      .then((res) => {
+        if (!res.ok) {
+          return res.json().then((err) => { throw err; });
+        }
+        return res.json();
+      })
+      .then((data) => {
+        if (data.error) {
+          setErrormsg(data.error);
+        } else {
+          console.log('logged-in: ',data);
+          Alert.alert('Success', 'Loged-in Successfully!');
+          navigation.navigate('MainScreen');
+        }
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+        setErrormsg('Invalid username or password');
+      });
   };
+
+// const LoginPage = () => {
+//   const navigation = useNavigation();
+//   const [name, setName] = useState('');
+//   const [password, setPassword] = useState('');
+
+//   const Sendtobackend = () => {
+//     if (name === 'admin' && password === 'admin123') {
+//       navigation.navigate('Dashboard');
+//     } else if (name === 'user' && password === 'user123') {
+//       navigation.navigate('MainScreen');
+//     } else {
+//       Alert.alert('Error', 'Invalid username or password');
+//     }
+//     setName('');
+//     setPassword('');
+//   };
   
   return (
-    <View style={styles.container}>
+    <View style={styles.container} >
+            
+      <Image style={styles.loginbg} source={loginbg} />
+    
+    <View style={styles.container1}>
       <Text style={styles.title}>LOGIN HERE!</Text>
+      {errormsg ? <Text style={styles.errorText}>{errormsg}</Text> : null}
 
       <TextInput
         style={styles.input}
-        placeholder="Name"
-        onChangeText={(text) => setName(text)}
-        value={name}
+        placeholder="Email"
+        onChangeText={(text) => setFdata({ ...fdata, email: text})}
       />
 
       <TextInput
         style={styles.input}
         placeholder="Password"
+        onChangeText={(text) => setFdata({ ...fdata, password: text})}
         secureTextEntry
-        onChangeText={(text) => setPassword(text)}
-        value={password}
       />
 
-      <TouchableOpacity style={styles.button} onPress={handleLoginPress}>
+      <TouchableOpacity style={styles.button} onPress={Sendtobackend}>
         <Text style={styles.buttonText}>Submit</Text>
       </TouchableOpacity>
+    </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
+  container:{
+    flex: 1,
+    backgroundColor: 'pink'
+  },
+  container1: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
@@ -66,6 +108,7 @@ const styles = StyleSheet.create({
     width: '100%',
     borderColor: 'black',
     borderWidth: 3,
+    borderRadius: 20,
     marginBottom: 20,
     paddingLeft: 10,
   },
@@ -80,6 +123,18 @@ const styles = StyleSheet.create({
     fontSize: 16,
     //fontWeight: 'bold',
   },
+  errorText: {
+    color: 'red',
+    marginBottom: 15,
+    fontSize: 17,
+  },
+  loginbg: {
+    position: 'absolute',
+    height: '100%',
+    width: '100%',
+    zIndex: -1,
+    opacity: 0.9,
+  }
 });
 
 export default LoginPage;

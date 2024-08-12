@@ -1,12 +1,11 @@
 import React, { useState } from 'react';
 import { View, TextInput, StyleSheet } from 'react-native';
-import { Feather } from '@expo/vector-icons'; // Assuming you're using Expo for icons
+import { Feather } from '@expo/vector-icons'; 
 
 const SearchScreen = ({ onSearch }) => {
   const [searchQuery, setSearchQuery] = useState('');
 
   const handleSearch = () => {
-    // Pass the search query to the parent component
     onSearch('Dummy search result for: ' + searchQuery);
   };
 
@@ -30,9 +29,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderWidth: 3,
     borderColor: 'black',
-    borderRadius: 10,
+    borderRadius: 20,
     paddingHorizontal: 20,
-    margin: 10,
+    marginTop: 60,
+    marginRight: 15,
+    marginLeft: 15,
   },
   icon: {
     marginRight: 10,

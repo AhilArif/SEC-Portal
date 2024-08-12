@@ -5,14 +5,12 @@ import { View, Text, StyleSheet, Image, TouchableOpacity, Alert } from 'react-na
 import ProfileImage from '../../../images/sccthrewurcloths-lozge7.jpeg'; // Adjust the path to match the location of your image file
 
 const ProfileScreen = ({ navigation }) => {
-  // Sample user data (replace with actual user data)
   const user = {
     name: 'Ahil Arif',
     email: 'bscs2012372@szabist.pk',
   };
 
   const handleLogout = () => {
-    // Display the confirmation dialog
     Alert.alert(
       'Confirmation',
       'Are you sure you want to log out?',
@@ -24,9 +22,7 @@ const ProfileScreen = ({ navigation }) => {
         {
           text: 'Yes',
           onPress: () => {
-            // Perform logout action (e.g., clear authentication state)
-            // Navigate to the login screen or perform any other required actions
-            navigation.navigate('Welcome'); // Navigate to the login screen after logout
+            navigation.navigate('Welcome'); 
           },
         },
       ],
@@ -36,16 +32,12 @@ const ProfileScreen = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      {/* Display the profile image from the local folder */}
       <Image source={ProfileImage} style={styles.profileImage} />
 
-      {/* User name */}
       <Text style={styles.name}>{user.name}</Text>
 
-      {/* Email address */}
       <Text style={styles.email}>{user.email}</Text>
 
-      {/* Logout button */}
       <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
         <Text style={styles.logoutButtonText}>Logout</Text>
       </TouchableOpacity>
@@ -62,7 +54,7 @@ const styles = StyleSheet.create({
   profileImage: {
     width: 150,
     height: 150,
-    borderRadius: 75, // Half of the width and height for a circular image
+    borderRadius: 75,
     marginBottom: 20,
   },
   name: {

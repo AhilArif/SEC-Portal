@@ -1,13 +1,13 @@
 import { StyleSheet, Text, View, Image } from 'react-native'
 import React from 'react'
-import loginbg from '../../../assets/loginbg.png'
+import trail from '../../../assets/trail.gif'
 import seclogo from '../../../assets/seclogo.png'
 import Bunty from '../../common/button'
 
 const Welcome = () => {
   return (
     <View style={styles.container}>
-      <Image style={styles.loginbg} source={loginbg} />
+      <Image style={styles.loginbg} source={trail} />
       <View style={styles.container1}> 
         <Image style={styles.seclogo} source={seclogo}/>
         <Bunty/>
@@ -29,6 +29,7 @@ const styles = StyleSheet.create({
         height: '100%',
         width: '100%',
         zIndex: -1,
+        opacity: 0.4,
    },
    container1: {
     display: 'flex',

@@ -1,25 +1,25 @@
 import React from 'react';
-import { Text, View, TouchableOpacity, StyleSheet, Alert, } from 'react-native';
-import { Feather } from '@expo/vector-icons'; // Assuming you're using Expo for icons
-// import * as DocumentPicker from 'expo-document-picker';
+import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
 const AddScreen = () => {
-  const handlePress = () => {
-    // Add your functionality here
-    Alert.alert('Icon Pressed', 'You pressed the icon!');
-  };
+  const navigation = useNavigation();
 
   return (
-    <TouchableOpacity
-      style={styles.container}
-      onPress={handlePress}
-      activeOpacity={0.7}
-    >
-      <View style={styles.iconContainer}>
-        <Feather name="plus-circle" size={100} color="black" />
-        <Text style={styles.uploadText}>Upload Files here!</Text>
-      </View>
-    </TouchableOpacity>
+    <View style={styles.container}>
+      <TouchableOpacity
+        style={styles.button}
+        onPress={() => navigation.navigate('EventForm')}
+      >
+        <Text style={styles.buttonText}>Add Event</Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        style={styles.button}
+        onPress={() => navigation.navigate('FinanceForm')}
+      >
+        <Text style={styles.buttonText}>Add Finances</Text>
+      </TouchableOpacity>
+    </View>
   );
 };
 
@@ -28,22 +28,25 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    padding: 20,
   },
-  iconContainer: {
-    width: '100%',
-    height: '100%',
-    justifyContent: 'center',
+  button: {
+    backgroundColor: 'blue',
+    padding: 15,
+    marginBottom: 20,
+    borderRadius: 5,
+    width: '80%',
     alignItems: 'center',
   },
-  uploadText: {
-    marginTop: 20,
-    fontSize: 16,
-    fontWeight: 'bold',
-    color: 'black',
+  buttonText: {
+    color: 'white',
+    fontSize: 18,
   },
 });
 
 export default AddScreen;
+
+
 
 // import React from 'react';
 // import {

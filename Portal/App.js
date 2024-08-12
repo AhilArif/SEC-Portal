@@ -4,9 +4,9 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Welcome from './src/components/screens/Welcome';
 import Login from './src/components/screens/Login';
+import Verification from './src/components/screens/Verification';
 import Signup from './src/components/screens/Signup';
 import MainScreen from './src/components/screens/MainScreen';
-// import Admin from './src/components/screens/Admin';
 import Dashboard from './src/components/screens/Dashboard';
 
 
@@ -19,12 +19,15 @@ export default function App() {
           <Stack.Screen
             name="Welcome"
             component={Welcome}
-            options={{headerShown:false}}
-            />
+            options={{headerShown:false}}/>
         <Stack.Screen 
           name='Login'
           component={Login}
-          options={{title:'Login'}}/>
+          options={{headerTitle:'',headerTransparent:true}}/>
+          <Stack.Screen 
+          name='Verification'
+          component={Verification}
+          options={{headerTitle:'',headerTransparent:true}}/>
           <Stack.Screen 
           name='MainScreen'
           component={MainScreen}
@@ -32,7 +35,7 @@ export default function App() {
         <Stack.Screen 
           name='Signup'
           component={Signup}
-          options={{title:'Register'}}/>
+          options={{headerTitle:'',headerTransparent:true}}/>
           <Stack.Screen 
           name='Dashboard'
           component={Dashboard}

@@ -1,39 +1,60 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from 'react-native';
-import { useNavigation } from '@react-navigation/native'; // Import the useNavigation hook
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert, Image } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import loginbg from '../../../assets/loginbg.png'
 
 const SignupPage = () => {
-  const navigation = useNavigation(); // Initialize navigation
-  
-  //Database
+  const navigation = useNavigation();
 
-  const [fdata,setFdata] = useState({
-    name:'',
-    email:'',
-    password:'',
-  })
+  const [fdata, setFdata] = useState({
+    name: '',
+    email: '',
+    password: '',
+  });
 
   const [errormsg, setErrormsg] = useState(null);
 
   const Sendtobackend = () => {
-    //console.log(fdata);
-    if(fdata.name == '' || fdata.email == '' || fdata.password == ''){
+    console.log(fdata);
+    if (fdata.name === '' || fdata.email === '' || fdata.password === '') {
       setErrormsg('All fields are required!');
-    return;
-    }
-    else {
-      fetch('http://10.0.2.2.:3000/signup',{
+      return;
+    } else {
+      fetch('http://10.0.2.2:3000/verify', {
         method: 'POST',
         headers: {
-          'Content-Type' : 'application/json'
+          'Content-Type': 'application/json',
         },
-        body: JSON.stringify(fdata)
+        body: JSON.stringify(fdata),
       })
+        .then((res) => {
+          if (!res.ok) {
+            throw new Error('Network response was not ok');
+          }
+          return res.text();
+        })
+        .then((text) => {
+          console.log('Response Text:', text);
+          const data = JSON.parse(text);
+          console.log(data);
+          if (data.error) {
+            setErrormsg(data.error);
+          } else {
+            Alert.alert('Success', 'Account Created Successfully!');
+            navigation.navigate('Verification');
+          }
+        })
+        .catch((error) => {
+          console.error('Error:', error);
+          setErrormsg('Failed to create an account. Please try again later.');
+        });
     }
-  }
+  };
 
   return (
     <View style={styles.container}>
+      <Image style={styles.loginbg} source={loginbg} />
+    <View style={styles.container1}>
       <Text style={styles.title}>Sign Up</Text>
 
       {errormsg ? <Text style={styles.errorText}>{errormsg}</Text> : null}
@@ -41,13 +62,15 @@ const SignupPage = () => {
       <TextInput
         style={styles.input}
         placeholder="Name"
-        onChangeText={(text) => setFdata({ ...fdata, name: text})}
+        onChangeText={(text) => setFdata({ ...fdata, name: text })}
+        value={fdata.name}
       />
 
       <TextInput
         style={styles.input}
         placeholder="Email"
-        onChangeText={(text) => setFdata({...fdata, email: text})}
+        onChangeText={(text) => setFdata({ ...fdata, email: text })}
+        value={fdata.email}
         keyboardType="email-address"
         autoCapitalize="none"
       />
@@ -55,7 +78,8 @@ const SignupPage = () => {
       <TextInput
         style={styles.input}
         placeholder="Password"
-        onChangeText={(text) => setFdata({...fdata, password: text})}
+        onChangeText={(text) => setFdata({ ...fdata, password: text })}
+        value={fdata.password}
         secureTextEntry
       />
 
@@ -63,11 +87,16 @@ const SignupPage = () => {
         <Text style={styles.buttonText}>Sign Up</Text>
       </TouchableOpacity>
     </View>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
+  container:{
+    flex:1,
+    backgroundColor: 'pink'
+  },
+  container1: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
@@ -82,6 +111,7 @@ const styles = StyleSheet.create({
     height: 40,
     width: '100%',
     borderColor: 'black',
+    borderRadius: 20,
     borderWidth: 3,
     marginBottom: 20,
     paddingLeft: 10,
@@ -95,12 +125,18 @@ const styles = StyleSheet.create({
   buttonText: {
     color: '#fff',
     fontSize: 16,
-    //fontWeight: 'bold',
   },
   errorText: {
-    color: 'red',
+    color: 'white',
     marginBottom: 15,
     fontSize: 17,
+  },
+  loginbg: {
+    position: 'absolute',
+    height: '100%',
+    width: '100%',
+    zIndex: -1,
+    opacity: 0.9,
   },
 });
 
