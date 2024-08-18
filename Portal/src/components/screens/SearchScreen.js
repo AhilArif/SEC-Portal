@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { View, TextInput, StyleSheet } from 'react-native';
+import { View, TextInput, StyleSheet, Image } from 'react-native';
 import { Feather } from '@expo/vector-icons'; 
+import loginbg from '../../../assets/loginbg.png'
 
 const SearchScreen = ({ onSearch }) => {
   const [searchQuery, setSearchQuery] = useState('');
@@ -11,6 +12,8 @@ const SearchScreen = ({ onSearch }) => {
 
   return (
     <View style={styles.container}>
+        <Image style={styles.loginbg} source={loginbg} />
+    <View style={styles.container1}>
       <Feather name="search" size={24} color="black" style={styles.icon} />
       <TextInput
         style={styles.input}
@@ -20,11 +23,16 @@ const SearchScreen = ({ onSearch }) => {
         value={searchQuery}
       />
     </View>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
+  container:{
+    flex: 1,
+    backgroundColor: 'pink'
+  },
+  container1: {
     flexDirection: 'row',
     alignItems: 'center',
     borderWidth: 3,
@@ -42,6 +50,13 @@ const styles = StyleSheet.create({
     flex: 1,
     height: 40,
   },
+  loginbg: {
+    position: 'absolute',
+    height: '100%',
+    width: '100%',
+    zIndex: -1,
+    opacity: 0.9,
+  }
 });
 
 export default SearchScreen;

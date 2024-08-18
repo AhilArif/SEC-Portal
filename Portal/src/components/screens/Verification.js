@@ -1,5 +1,5 @@
 import { useNavigation } from '@react-navigation/native';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert, Image } from 'react-native';
 import loginbg from '../../../assets/loginbg.png'
 
@@ -11,27 +11,28 @@ const Verification = ({ navigation, route }) => {
   const [actualCode, setActualCode] = useState(null);
 
   useEffect(() => {
-      setActualCode(userdata[0]?.VerificationCode);
+    console.log(userdata)
+      setActualCode(userdata?.VerificationCode);
   }, [])
 
   const Sendtobackend = () => {
-      // console.log(userCode);
-      // console.log(actualCode);
+      console.log(userdata);
+      console.log(actualCode);
 
       if (userCode == 'XXXX' || userCode == '') {
           setErrormsg('Please enter the code');
           return;
       }
 
-      else if (userCode == actualCode) {
+      else if (userCode.text == actualCode) {
           // console.log('correct code');
           const fdata = {
-              email: userdata[0]?.email,
-              password: userdata[0]?.password,
-              name: userdata[0]?.name,
+              email: userdata?.email,
+              password: userdata?.password,
+              name: userdata?.name,
           }
 
-          fetch('http://10.0.2.2.:3000/signup', {
+          fetch('http://10.0.2.2:3000/signup', {
               method: 'POST',
               headers: {
                   'Content-Type': 'application/json'
@@ -43,16 +44,19 @@ const Verification = ({ navigation, route }) => {
                   // console.log(data);
                   if (data.message === 'User Registered Successfully') {
                       alert(data.message);
-                      navigation.navigate('login')
+                      navigation.navigate('Login')
                   }
                   else {
                       alert("Something went wrong !! Try Signing Up Again");
 
                   }
               })
+             . catch(console.log)
+          
       }
       else if (userCode != actualCode) {
-          setErrormsg('Incorrect code');
+        console.log(userdata , userCode , actualCode)
+          setErrormsg('Incorrect code'+actualCode);
           return;
       }
 
@@ -126,7 +130,7 @@ const styles = StyleSheet.create({
     //fontWeight: 'bold',
   },
   errorText: {
-    color: 'red',
+    color: 'white',
     marginBottom: 15,
     fontSize: 17,
   },

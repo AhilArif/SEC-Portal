@@ -45,7 +45,7 @@ const CalendarScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: 'white',
   },
   calendarContainer: {
     padding: 10,
@@ -71,6 +71,13 @@ const styles = StyleSheet.create({
     height: 50,
     marginRight: 10,
     borderRadius: 25, // Make the image circular
+  },
+  loginbg: {
+    position: 'absolute',
+    height: '100%',
+    width: '100%',
+    zIndex: -1,
+    opacity: 0.9,
   },
 });
 

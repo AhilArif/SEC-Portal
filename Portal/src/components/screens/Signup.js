@@ -31,17 +31,17 @@ const SignupPage = () => {
           if (!res.ok) {
             throw new Error('Network response was not ok');
           }
-          return res.text();
+          return res.json()
         })
-        .then((text) => {
-          console.log('Response Text:', text);
-          const data = JSON.parse(text);
+        .then((json) => {
+          console.log('Response Text:', json);
+          const data = json
           console.log(data);
           if (data.error) {
             setErrormsg(data.error);
           } else {
             Alert.alert('Success', 'Account Created Successfully!');
-            navigation.navigate('Verification');
+            navigation.navigate('Verification',{userdata: data.udata});
           }
         })
         .catch((error) => {

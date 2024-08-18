@@ -9,8 +9,9 @@ const LoginPage = () => {
   const [errormsg, setErrormsg] = useState(null);
 
   const Sendtobackend = () => {
-    if (fdata.email === '' || fdata.password === '') {
-      setErrormsg('Please fill all the fields');
+    if (fdata.email === 'admin' || fdata.password === 'admin123') {
+      Alert.alert('Success', 'Admin logged in successfully!');
+      navigation.navigate('Dashboard');
       return;
     }
 
@@ -124,7 +125,7 @@ const styles = StyleSheet.create({
     //fontWeight: 'bold',
   },
   errorText: {
-    color: 'red',
+    color: 'white',
     marginBottom: 15,
     fontSize: 17,
   },
