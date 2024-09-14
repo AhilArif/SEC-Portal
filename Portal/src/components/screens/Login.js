@@ -2,6 +2,7 @@ import { useNavigation } from '@react-navigation/native';
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert, Image } from 'react-native';
 import loginbg from '../../../assets/loginbg.png'
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const LoginPage = () => {
   const navigation = useNavigation();
@@ -81,7 +82,7 @@ const LoginPage = () => {
       />
 
       <TouchableOpacity style={styles.button} onPress={Sendtobackend}>
-        <Text style={styles.buttonText}>Submit</Text>
+        <Text style={styles.buttonText}>Login</Text>
       </TouchableOpacity>
     </View>
     </View>

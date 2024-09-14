@@ -1,18 +1,16 @@
 import React from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity, Alert } from 'react-native';
-
+import loginbg from '.../../../assets/loginbg.png'
 // Import the profile image from the assets folder
 import ProfileImage from '../../../../images/sccthrewurcloths-lozge7.jpeg'; // Adjust the path to match the location of your image file
 
 const AdminProfileScreen = ({ navigation }) => {
-  // Sample user data (replace with actual user data)
   const user = {
     name: 'Admin',
     email: 'admin@szabist.pk',
   };
 
   const handleLogout = () => {
-    // Display the confirmation dialog
     Alert.alert(
       'Confirmation',
       'Are you sure you want to log out?',
@@ -35,8 +33,10 @@ const AdminProfileScreen = ({ navigation }) => {
   };
 
   return (
-    <View style={styles.container}>
-      {/* Display the profile image from the local folder */}
+    <View style={styles.container} >
+      <Image source={loginbg} style={styles.loginbg} />
+    <View style={styles.container1}>
+      
       <Image source={ProfileImage} style={styles.profileImage} />
 
       {/* User name */}
@@ -50,11 +50,16 @@ const AdminProfileScreen = ({ navigation }) => {
         <Text style={styles.logoutButtonText}>Logout</Text>
       </TouchableOpacity>
     </View>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
+  container:{
+    flex: 1,
+    backgroundColor: 'pink'
+  },
+  container1: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
@@ -62,7 +67,7 @@ const styles = StyleSheet.create({
   profileImage: {
     width: 150,
     height: 150,
-    borderRadius: 75, // Half of the width and height for a circular image
+    borderRadius: 75, 
     marginBottom: 20,
   },
   name: {
@@ -71,19 +76,26 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   email: {
-    fontSize: 16,
+    fontSize: 14,
     marginBottom: 20,
   },
   logoutButton: {
-    backgroundColor: 'red',
+    backgroundColor: 'blue',
     paddingVertical: 10,
     paddingHorizontal: 20,
     borderRadius: 5,
   },
   logoutButtonText: {
     color: '#fff',
-    fontSize: 16,
+    fontSize: 14,
   },
+  loginbg: {
+    position: 'absolute',
+    height: '100%',
+    width: '100%',
+    zIndex: -1,
+    opacity: 0.9,
+  }
 });
 
 export default AdminProfileScreen;

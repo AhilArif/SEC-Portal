@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, TouchableOpacity, ScrollView, StyleSheet, Alert, BackHandler } from 'react-native';
-import { useFocusEffect } from '@react-navigation/native';
+import React, { useState } from 'react';
+import { View, Text, TextInput, TouchableOpacity, ScrollView, StyleSheet, Alert } from 'react-native';
+import DateTimePicker from '@react-native-community/datetimepicker';
+import { format } from 'date-fns';
 
 const AddScreen = () => {
   const [eventDetailsExpanded, setEventDetailsExpanded] = useState(false);
@@ -15,36 +16,23 @@ const AddScreen = () => {
   const [revenue, setRevenue] = useState('');
 
   const [formSubmitted, setFormSubmitted] = useState(false);
+  const [showDatePicker, setShowDatePicker] = useState(false);
+  const [selectedDate, setSelectedDate] = useState(new Date());
 
-  // Prevent navigation if the form is not submitted
-  useFocusEffect(
-    React.useCallback(() => {
-      const onBackPress = () => {
-        if (!formSubmitted) {
-          Alert.alert(
-            'Incomplete Form',
-            'Please complete and submit the form before leaving.',
-            [{ text: 'OK' }]
-          );
-          return true; // Prevent default behavior (going back)
-        }
-        return false; // Allow default behavior
-      };
-
-      BackHandler.addEventListener('hardwareBackPress', onBackPress);
-
-      return () => {
-        BackHandler.removeEventListener('hardwareBackPress', onBackPress);
-      };
-    }, [formSubmitted])
-  );
+  const handleDateChange = (event, date) => {
+    setShowDatePicker(false);
+    if (date) {
+      setSelectedDate(date);
+      setEventdate(format(date, 'yyyy-MM-dd')); 
+    }
+  };
 
   const handleSubmit = async () => {
     if (!eventname || !eventdate || !eventlocation || !budget || !expenses || !revenue) {
       Alert.alert('Error', 'All fields are required.');
       return;
     }
-  
+
     const eventData = {
       eventname,
       eventdate,
@@ -53,7 +41,7 @@ const AddScreen = () => {
       expenses,
       revenue,
     };
-  
+
     try {
       const response = await fetch('http://10.0.2.2:3000/form', {
         method: 'POST',
@@ -62,14 +50,14 @@ const AddScreen = () => {
         },
         body: JSON.stringify(eventData),
       });
-  
+
       const data = await response.json();
-  
+
       if (response.ok) {
         Alert.alert('Form Submitted', 'Your form has been received. Please check your email for any changes.', [{ text: 'OK' }]);
         setFormSubmitted(true);
-  
-        // Reset form fields
+
+        
         setEventname('');
         setEventdate('');
         setEventlocation('');
@@ -101,12 +89,14 @@ const AddScreen = () => {
             value={eventname}
             onChangeText={setEventname}
           />
-          <TextInput
-            style={styles.input}
-            placeholder="Event Date"
-            value={eventdate}
-            onChangeText={setEventdate}
-          />
+          <TouchableOpacity onPress={() => setShowDatePicker(true)}>
+            <TextInput
+              style={styles.input}
+              placeholder="Event Date"
+              value={eventdate}
+              editable={false}
+            />
+          </TouchableOpacity>
           <TextInput
             style={styles.input}
             placeholder="Event Location"
@@ -129,18 +119,21 @@ const AddScreen = () => {
             placeholder="Budget"
             value={budget}
             onChangeText={setBudget}
+            keyboardType="numeric"
           />
           <TextInput
             style={styles.input}
             placeholder="Expenses"
             value={expenses}
             onChangeText={setExpenses}
+            keyboardType="numeric"
           />
           <TextInput
             style={styles.input}
             placeholder="Revenue"
             value={revenue}
             onChangeText={setRevenue}
+            keyboardType="numeric"
           />
         </View>
       )}
@@ -148,6 +141,16 @@ const AddScreen = () => {
       <TouchableOpacity style={styles.submitButton} onPress={handleSubmit}>
         <Text style={styles.submitButtonText}>Submit</Text>
       </TouchableOpacity>
+
+      {showDatePicker && (
+        <DateTimePicker
+          value={selectedDate}
+          mode="date"
+          display="default"
+          onChange={handleDateChange}
+          minimumDate={new Date()} 
+        />
+      )}
     </ScrollView>
   );
 };
@@ -193,4 +196,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default AddScreen;
+export default AddScreen;

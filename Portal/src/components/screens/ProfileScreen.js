@@ -1,13 +1,39 @@
-import React from 'react';
-import { View, Text, StyleSheet, Image, TouchableOpacity, Alert } from 'react-native';
-import loginbg from '../../../assets/loginbg.png'
-// Import the profile image from the assets folder
-import ProfileImage from '../../../images/sccthrewurcloths-lozge7.jpeg'; // Adjust the path to match the location of your image file
+import React, { useState, useEffect } from 'react';
+import { View, Text, StyleSheet, Image, TouchableOpacity, Alert, TextInput } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import loginbg from '../../../assets/loginbg.png';
+import ProfileImage from '../../../images/sccthrewurcloths-lozge7.jpeg'; 
 
 const ProfileScreen = ({ navigation }) => {
-  const user = {
-    name: 'Ahil Arif',
-    email: 'bscs2012372@szabist.pk',
+  const [name, setName] = useState('');
+  const [isEditing, setIsEditing] = useState(false);
+
+  useEffect(() => {
+    const loadName = async () => {
+      try {
+        const savedName = await AsyncStorage.getItem('userName');
+        if (savedName) {
+          setName(savedName);
+        } else {
+          setName(''); 
+        }
+      } catch (error) {
+        console.error('Failed to load name:', error);
+      }
+    };
+
+    loadName();
+  }, []);
+
+  const handleSaveName = async () => {
+    try {
+      await AsyncStorage.setItem('userName', name);
+      Alert.alert('Success', 'Your name has been updated.');
+      setIsEditing(false);
+    } catch (error) {
+      console.error('Failed to save name:', error);
+      Alert.alert('Error', 'Failed to update your name.');
+    }
   };
 
   const handleLogout = () => {
@@ -32,24 +58,40 @@ const ProfileScreen = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-        <Image style={styles.loginbg} source={loginbg} />
-    <View style={styles.container1}>
-      <Image source={ProfileImage} style={styles.profileImage} />
+      <Image style={styles.loginbg} source={loginbg} />
+      <View style={styles.container1}>
+        <Image source={ProfileImage} style={styles.profileImage} />
 
-      <Text style={styles.name}>{user.name}</Text>
+        {isEditing ? (
+          <TextInput
+            style={styles.nameInput}
+            value={name}
+            onChangeText={setName}
+          />
+        ) : (
+          <Text style={styles.name}>{name}</Text>
+        )}
 
-      <Text style={styles.email}>{user.email}</Text>
+        {isEditing ? (
+          <TouchableOpacity style={styles.saveButton} onPress={handleSaveName}>
+            <Text style={styles.saveButtonText}>Save</Text>
+          </TouchableOpacity>
+        ) : (
+          <TouchableOpacity style={styles.editButton} onPress={() => setIsEditing(true)}>
+            <Text style={styles.editButtonText}>Edit Name</Text>
+          </TouchableOpacity>
+        )}
 
-      <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
-        <Text style={styles.logoutButtonText}>Logout</Text>
-      </TouchableOpacity>
-    </View>
+        <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
+          <Text style={styles.logoutButtonText}>Logout</Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  container:{
+  container: {
     flex: 1,
     backgroundColor: 'pink'
   },
@@ -69,9 +111,36 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginBottom: 10,
   },
-  email: {
-    fontSize: 16,
+  nameInput: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginBottom: 10,
+    borderBottomWidth: 1,
+    borderColor: 'gray',
+    width: '80%',
+    textAlign: 'center',
+  },
+  editButton: {
+    backgroundColor: 'blue',
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 5,
     marginBottom: 20,
+  },
+  editButtonText: {
+    color: '#fff',
+    fontSize: 14,
+  },
+  saveButton: {
+    backgroundColor: 'green',
+    paddingVertical: 5,
+    paddingHorizontal: 15,
+    borderRadius: 5,
+    marginBottom: 10,
+  },
+  saveButtonText: {
+    color: '#fff',
+    fontSize: 16,
   },
   logoutButton: {
     backgroundColor: 'blue',
@@ -92,4 +161,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default ProfileScreen;
+export default ProfileScreen;

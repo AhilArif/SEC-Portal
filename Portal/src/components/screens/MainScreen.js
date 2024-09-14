@@ -9,6 +9,7 @@ import SearchScreen from './SearchScreen';
 import AddScreen from './AddScreen';
 import CalenderScreen from './CalenderScreen';
 import bang from '../../../assets/bang.jpg'
+import NotificationScreen from './Notification';
 
 const Tab = createBottomTabNavigator();
 
@@ -33,6 +34,8 @@ const MainScreen = () => {
               iconName = 'calendar';
             } else if (route.name === 'Profile') {
               iconName = 'person';
+            } else if (route.name === 'Notification') {
+              iconName = 'notifications';
             }
 
             return <Ionicons name={iconName} size={size} color={color} />;
@@ -46,6 +49,7 @@ const MainScreen = () => {
         <Tab.Screen name="Search" component={SearchScreen} options={{headerTitle:'',headerTransparent:true}} />
         <Tab.Screen name="Add" component={AddScreen} />
         <Tab.Screen name="Calender" component={CalenderScreen} />
+        <Tab.Screen name='Notification' component={NotificationScreen} options={{headerTitle:'', headerTransparent:true}} />
         <Tab.Screen name="Profile" component={ProfileScreen} options={{headerTitle:'',headerTransparent:true}} />
       </Tab.Navigator>
     </ImageBackground>

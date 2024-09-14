@@ -4,7 +4,7 @@
     "slug": "Portal",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/seclogo.png",
     "userInterfaceStyle": "light",
     "splash": {
       "image": "./assets/download.png",
@@ -19,8 +19,8 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/icon.png",
-        "backgroundColor": "#ffffff"
+        "foregroundImage": "./assets/seclogo.png",
+        "backgroundColor": "white"
       }
     },
     "web": {
