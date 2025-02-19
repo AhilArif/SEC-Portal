@@ -26,7 +26,7 @@ async function mailer(recieveremail, code) {
         requireTLS: true,
         auth: {
             user: "bscs2012372@szabist.pk", // generated ethereal user
-            pass: "lgovjmmputavceum", // generated ethereal password
+            pass: "your-generated-password", // generated ethereal password
         },
     });
 
